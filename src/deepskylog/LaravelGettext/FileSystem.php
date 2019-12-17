@@ -2,6 +2,7 @@
 
 namespace deepskylog\LaravelGettext;
 
+use Illuminate\Support\Facades\Blade;
 use RecursiveIteratorIterator;
 use RecursiveDirectoryIterator;
 use deepskylog\LaravelGettext\Config\Models\Config;
@@ -95,6 +96,9 @@ class FileSystem
             $files = $fs->allFiles($realPath);
 
             $compiler = new \Illuminate\View\Compilers\BladeCompiler($fs, $domainDir);
+            foreach (Blade::getCustomDirectives() as $directive => $callback) {
+                $compiler->directive($directive, $callback);
+            }
 
             foreach ($files as $file) {
                 // try {

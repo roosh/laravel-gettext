@@ -1,5 +1,6 @@
 <?php namespace Xinax\LaravelGettext;
 
+use Illuminate\Support\Facades\Blade;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Xinax\LaravelGettext\Config\Models\Config;
@@ -101,6 +102,9 @@ class FileSystem
             $files = $fs->allFiles($realPath);
 
             $compiler = new \Illuminate\View\Compilers\BladeCompiler($fs, $domainDir);
+            foreach (Blade::getCustomDirectives() as $directive => $callback) {
+                $compiler->directive($directive, $callback);
+            }
 
             foreach ($files as $file) {
                 $filePath = $file->getRealPath();

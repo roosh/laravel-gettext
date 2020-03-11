@@ -1,4 +1,6 @@
-<?php namespace Xinax\LaravelGettext\Translators;
+<?php
+
+namespace Xinax\LaravelGettext\Translators;
 
 use Symfony\Component\Translation\Loader\PoFileLoader;
 use Symfony\Component\Translation\Translator as SymfonyTranslator;
@@ -10,15 +12,14 @@ use Xinax\LaravelGettext\FileSystem;
 use Xinax\LaravelGettext\Storages\Storage;
 
 /**
- * Class implemented by Symfony translation component
+ * Class implemented by Symfony translation component.
  *
  * @package Xinax\LaravelGettext\Translators
  */
 class Symfony extends BaseTranslator
 {
-
     /**
-     * Symfony translator
+     * Symfony translator.
      *
      * @var SymfonyTranslator
      */
@@ -36,9 +37,8 @@ class Symfony extends BaseTranslator
         $this->loadLocaleFile();
     }
 
-
     /**
-     * Translates a message using the Symfony translation component
+     * Translates a message using the Symfony translation component.
      *
      * @param $message
      *
@@ -50,7 +50,7 @@ class Symfony extends BaseTranslator
     }
 
     /**
-     * Returns the translator instance
+     * Returns the translator instance.
      *
      * @return SymfonyTranslator
      */
@@ -73,6 +73,9 @@ class Symfony extends BaseTranslator
      */
     public function setLocale($locale)
     {
+        if ($locale == null) {
+            $locale = 'en';
+        }
         parent::setLocale($locale);
         $this->getTranslator()->setLocale($locale);
         $this->loadLocaleFile();
@@ -103,7 +106,7 @@ class Symfony extends BaseTranslator
     }
 
     /**
-     * Creates a new translator instance
+     * Creates a new translator instance.
      *
      * @return SymfonyTranslator
      */
@@ -118,7 +121,7 @@ class Symfony extends BaseTranslator
     }
 
     /**
-     * Translates a plural string
+     * Translates a plural string.
      *
      * @param $singular
      * @param $plural
@@ -143,7 +146,7 @@ class Symfony extends BaseTranslator
     }
 
     /**
-     * Translate a plural string that is only on one line separated with pipes
+     * Translate a plural string that is only on one line separated with pipes.
      *
      * @param $message
      * @param $amount
@@ -186,7 +189,7 @@ class Symfony extends BaseTranslator
 
     /**
      * Returns a boolean that indicates if $locale
-     * is supported by configuration
+     * is supported by configuration.
      *
      * @param $locale
      *
@@ -202,7 +205,7 @@ class Symfony extends BaseTranslator
     }
 
     /**
-     * Return the current locale
+     * Return the current locale.
      *
      * @return mixed
      */
@@ -212,7 +215,7 @@ class Symfony extends BaseTranslator
     }
 
     /**
-     * Returns supported locales
+     * Returns supported locales.
      *
      * @return array
      */

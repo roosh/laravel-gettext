@@ -2,11 +2,13 @@
 
 *Laravel Gettext* is a package compatible with the great Laravel PHP Framework. It provides a simple way to add localization support to Laravel applications. It is designed to work with *GNU gettext* and *Poedit*. Former versions of this package (before 4.x) works with the native php-gettext module. Current versions uses the Symfony translation package by default instead of native php extension.
 
-[![Stable build Status](https://travis-ci.org/deepskylog/laravel-gettext.png?branch=7.2.0)](https://travis-ci.org/zerospam/laravel-gettext) [Latest Laravel 6 stable release (7.2.0)](https://github.com/zerospam/laravel-gettext/tree/7.2.0)
+[![Stable build Status](https://travis-ci.org/deepskylog/laravel-gettext.png?branch=7.3.0)](https://travis-ci.org/zerospam/laravel-gettext) [Latest Laravel 7 stable release (7.3.0)](https://github.com/zerospam/laravel-gettext/tree/7.3.0)
 
 > Note: This documentation applies to laravel 5.5.x and up. For older versions of laravel check the following links:
 
 ### Older versions
+[![Stable build Status](https://travis-ci.org/deepskylog/laravel-gettext.png?branch=7.2.0)](https://travis-ci.org/zerospam/laravel-gettext) [Latest Laravel 6 stable release (7.2.0)](https://github.com/zerospam/laravel-gettext/tree/7.2.0)
+
 [![Stable build Status](https://travis-ci.org/deepskylog/laravel-gettext.png?branch=7.1.0)](https://travis-ci.org/zerospam/laravel-gettext) [Latest Laravel 5.6.x  & 5.7.x stable release (7.1.0)](https://github.com/zerospam/laravel-gettext/tree/7.0.0)
 
 [![Stable build Status](https://travis-ci.org/deepskylog/laravel-gettext.png?branch=6.1.0)](https://travis-ci.org/zerospam/laravel-gettext) [Latest Laravel 5.5.x stable release (6.1.0)](https://github.com/zerospam/laravel-gettext/tree/6.1.0)

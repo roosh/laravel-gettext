@@ -2,11 +2,11 @@
 
 namespace deepskylog\LaravelGettext\Translators;
 
-use deepskylog\LaravelGettext\Adapters\AdapterInterface;
-use deepskylog\LaravelGettext\Config\Models\Config;
-use deepskylog\LaravelGettext\Exceptions\UndefinedDomainException;
 use deepskylog\LaravelGettext\FileSystem;
 use deepskylog\LaravelGettext\Storages\Storage;
+use deepskylog\LaravelGettext\Config\Models\Config;
+use deepskylog\LaravelGettext\Adapters\AdapterInterface;
+use deepskylog\LaravelGettext\Exceptions\UndefinedDomainException;
 
 abstract class BaseTranslator implements TranslatorInterface
 {
@@ -53,9 +53,9 @@ abstract class BaseTranslator implements TranslatorInterface
     ) {
         // Sets the package configuration and session handler
         $this->configuration = $config;
-        $this->adapter = $adapter;
-        $this->fileSystem = $fileSystem;
-        $this->storage = $storage;
+        $this->adapter       = $adapter;
+        $this->fileSystem    = $fileSystem;
+        $this->storage       = $storage;
     }
 
     /**

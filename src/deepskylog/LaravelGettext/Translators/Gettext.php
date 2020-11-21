@@ -3,11 +3,11 @@
 namespace deepskylog\LaravelGettext\Translators;
 
 use deepskylog\LaravelGettext\FileSystem;
-use deepskylog\LaravelGettext\Adapters\AdapterInterface;
-use deepskylog\LaravelGettext\Config\Models\Config;
-use deepskylog\LaravelGettext\Exceptions\LocaleNotSupportedException;
-use deepskylog\LaravelGettext\Exceptions\UndefinedDomainException;
 use deepskylog\LaravelGettext\Storages\Storage;
+use deepskylog\LaravelGettext\Config\Models\Config;
+use deepskylog\LaravelGettext\Adapters\AdapterInterface;
+use deepskylog\LaravelGettext\Exceptions\UndefinedDomainException;
+use deepskylog\LaravelGettext\Exceptions\LocaleNotSupportedException;
 
 /**
  * Class implemented by the php-gettext module translator.
@@ -91,7 +91,7 @@ class Gettext extends BaseTranslator implements TranslatorInterface
         }
 
         try {
-            $customLocale = $this->configuration->getCustomLocale() ? 'C.' : $locale . '.';
+            $customLocale  = $this->configuration->getCustomLocale() ? 'C.' : $locale . '.';
             $gettextLocale = $customLocale . $this->getEncoding();
 
             // Update all categories set in config
@@ -109,7 +109,7 @@ class Gettext extends BaseTranslator implements TranslatorInterface
 
             return $this->getLocale();
         } catch (\Exception $e) {
-            $this->locale = $this->configuration->getFallbackLocale();
+            $this->locale      = $this->configuration->getFallbackLocale();
             $exceptionPosition = $e->getFile() . ':' . $e->getLine();
             throw new \Exception($exceptionPosition . $e->getMessage());
         }

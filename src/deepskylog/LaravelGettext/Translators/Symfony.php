@@ -2,14 +2,14 @@
 
 namespace deepskylog\LaravelGettext\Translators;
 
-use Symfony\Component\Translation\Loader\PoFileLoader;
-use Symfony\Component\Translation\Translator as SymfonyTranslator;
-use deepskylog\LaravelGettext\Adapters\AdapterInterface;
-use deepskylog\LaravelGettext\Config\Models\Config;
-use deepskylog\LaravelGettext\FileLoader\Cache\ApcuFileCacheLoader;
-use deepskylog\LaravelGettext\FileLoader\MoFileLoader;
 use deepskylog\LaravelGettext\FileSystem;
 use deepskylog\LaravelGettext\Storages\Storage;
+use deepskylog\LaravelGettext\Config\Models\Config;
+use deepskylog\LaravelGettext\FileLoader\MoFileLoader;
+use Symfony\Component\Translation\Loader\PoFileLoader;
+use deepskylog\LaravelGettext\Adapters\AdapterInterface;
+use Symfony\Component\Translation\Translator as SymfonyTranslator;
+use deepskylog\LaravelGettext\FileLoader\Cache\ApcuFileCacheLoader;
 
 /**
  * Class implemented by Symfony translation component.

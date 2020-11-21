@@ -2,11 +2,11 @@
 
 namespace deepskylog\LaravelGettext;
 
-use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
+use RecursiveDirectoryIterator;
 use deepskylog\LaravelGettext\Config\Models\Config;
-use deepskylog\LaravelGettext\Exceptions\DirectoryNotFoundException;
 use deepskylog\LaravelGettext\Exceptions\FileCreationException;
+use deepskylog\LaravelGettext\Exceptions\DirectoryNotFoundException;
 use deepskylog\LaravelGettext\Exceptions\LocaleFileNotFoundException;
 
 class FileSystem
@@ -55,21 +55,12 @@ class FileSystem
     public function __construct(Config $config, $basePath, $storagePath)
     {
         $this->configuration = $config;
-        $this->basePath = $basePath;
+        $this->basePath      = $basePath;
 
-        $this->storagePath = $storagePath;
+        $this->storagePath      = $storagePath;
         $this->storageContainer = 'framework';
-        $this->folderName = 'i18n';
+        $this->folderName       = 'i18n';
     }
-
-    /**
-     * Build views in order to parse php files.
-     *
-     * @param Array  $viewPaths
-     * @param String $domain
-     *
-     * @return Boolean status
-     */
 
     /**
      * Build views in order to parse php files.
@@ -100,19 +91,57 @@ class FileSystem
                 throw new Exceptions\DirectoryNotFoundException("Failed to resolve $path, please check that it exists");
             }
 
-            $fs = new \Illuminate\Filesystem\Filesystem($path);
+            $fs    = new \Illuminate\Filesystem\Filesystem($path);
             $files = $fs->allFiles($realPath);
 
             $compiler = new \Illuminate\View\Compilers\BladeCompiler($fs, $domainDir);
 
             foreach ($files as $file) {
+                // try {
                 $filePath = $file->getRealPath();
                 $compiler->setPath($filePath);
 
-                $contents = $compiler->compileString($fs->get($filePath));
+                try {
+                    $contents     = $compiler->compileString($fs->get($filePath));
+                } catch (\Throwable $th) {
+                    // If we have an exception, we should remove the <x-media-library-attachment /> from the file
+                    $file         = $fs->get($filePath);
+                    // Get the name of the component from the exception
+                    $totalLength      = strlen($th->getMessage());
+                    $startOfComponent = strpos($th->getMessage(), '[') + 1;
+                    $componentName    = substr($th->getMessage(), $startOfComponent, $totalLength - $startOfComponent - 2);
+                    $componentName    = '<x-' . $componentName;
 
+                    // Get the full component, not only the name
+                    $componentString = substr($file, strpos($file, $componentName));
+                    $endOfComponent  = strpos($componentString, '>') + 1;
+                    $componentString = substr($componentString, 0, $endOfComponent);
+
+                    // Remove from the <x-componentName to '/>
+                    $newString       = str_replace($componentString, '', $file);
+                    // Compile the new string
+                    try {
+                        $contents     = $compiler->compileString($newString);
+                    } catch (\Throwable $th) {
+                        // If we have an exception, we should remove the <x-media-library-attachment /> from the file
+                        $file         = $fs->get($filePath);
+                        // Get the name of the component from the exception
+                        $totalLength      = strlen($th->getMessage());
+                        $startOfComponent = strpos($th->getMessage(), '[') + 1;
+                        $componentName    = substr($th->getMessage(), $startOfComponent, $totalLength - $startOfComponent - 2);
+                        $componentName    = '<x-' . $componentName;
+
+                        // Get the full component, not only the name
+                        $componentString = substr($file, strpos($file, $componentName));
+                        $endOfComponent  = strpos($componentString, '>') + 1;
+                        $componentString = substr($componentString, 0, $endOfComponent);
+
+                        // Remove from the <x-componentName to '/>
+                        $newString       = str_replace($componentString, '', $file);
+                        // Compile the new string
+                    }
+                }
                 $compiledPath = $compiler->getCompiledPath($compiler->getPath());
-
                 $fs->put(
                     $compiledPath . '.php',
                     $contents
@@ -156,10 +185,10 @@ class FileSystem
      */
     public function createPOFile($path, $locale, $domain, $write = true)
     {
-        $project = $this->configuration->getProject();
-        $timestamp = date('Y-m-d H:iO');
+        $project    = $this->configuration->getProject();
+        $timestamp  = date('Y-m-d H:iO');
         $translator = $this->configuration->getTranslator();
-        $encoding = $this->configuration->getEncoding();
+        $encoding   = $this->configuration->getEncoding();
 
         $relativePath = $this->configuration->getRelativePath();
 
@@ -203,7 +232,7 @@ class FileSystem
         }
 
         // File creation
-        $file = fopen($path, 'w');
+        $file   = fopen($path, 'w');
         $result = fwrite($file, $template);
         fclose($file);
 
@@ -236,7 +265,7 @@ class FileSystem
     {
         $data = [
             $localePath,
-            'LC_MESSAGES'
+            'LC_MESSAGES',
         ];
 
         if (!file_exists($localePath)) {
@@ -295,7 +324,6 @@ class FileSystem
             $customLocale = ['C'];
             array_splice($data, 1, 0, $customLocale);
         }
-
         $localePOPath = implode(DIRECTORY_SEPARATOR, $data);
 
         if (!file_exists($localePOPath) || !$localeContents = file_get_contents($localePOPath)) {
@@ -310,7 +338,6 @@ class FileSystem
             $domain,
             false
         );
-
         // Header replacement
         $localeContents = preg_replace('/^([^#])+:?/', $newHeader, $localeContents);
 
@@ -319,7 +346,9 @@ class FileSystem
                 sprintf('Can\'t write on %s', $localePOPath)
             );
         }
-
+        if ($locale == 'nl_NL') {
+            // dd($localePOPath, $localeContents);
+        }
         return true;
     }
 
@@ -335,12 +364,12 @@ class FileSystem
     {
         // Compatibility fixes for Windows paths
         $from = is_dir($from) ? rtrim($from, '\/') . '/' : $from;
-        $to = is_dir($to) ? rtrim($to, '\/') . '/' : $to;
+        $to   = is_dir($to) ? rtrim($to, '\/') . '/' : $to;
         $from = str_replace('\\', '/', $from);
-        $to = str_replace('\\', '/', $to);
+        $to   = str_replace('\\', '/', $to);
 
-        $from = explode('/', $from);
-        $to = explode('/', $to);
+        $from    = explode('/', $from);
+        $to      = explode('/', $to);
         $relPath = $to;
 
         foreach ($from as $depth => $dir) {
@@ -610,7 +639,7 @@ class FileSystem
             [
                 $locale,
                 'LC_MESSAGES',
-                $domain . '.' . $type
+                $domain . '.' . $type,
             ]
         );
 

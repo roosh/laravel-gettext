@@ -3,8 +3,8 @@
 namespace deepskylog\LaravelGettext\Commands;
 
 use Exception;
-use deepskylog\LaravelGettext\Exceptions\DirectoryNotFoundException;
 use Symfony\Component\Console\Input\InputOption;
+use deepskylog\LaravelGettext\Exceptions\DirectoryNotFoundException;
 
 class GettextUpdate extends BaseCommand
 {
@@ -43,7 +43,7 @@ class GettextUpdate extends BaseCommand
             }
 
             $count = [
-                'added' => 0,
+                'added'   => 0,
                 'updated' => 0,
             ];
 
@@ -86,6 +86,7 @@ class GettextUpdate extends BaseCommand
                     $count['updated']++;
                 }
             }
+            // dd('test', $localePath);
 
             $this->info('Finished');
 
@@ -127,7 +128,7 @@ class GettextUpdate extends BaseCommand
                 InputOption::VALUE_OPTIONAL,
                 'Update files only for this domain',
                 null,
-            ]
+            ],
         ];
     }
 }
